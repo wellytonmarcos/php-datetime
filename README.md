@@ -11,9 +11,10 @@ define("DATE_BR", "d/m/Y"); //Exibindo apenas a data no Formato Brasileiro
 ### Criando objetos DateTime
 Criar objetos a partir da Classe DateTime
 ```
-$agora = new DateTime();                  //Criando uma nova data hora de agora
-$avulsa = new DateTime("2020-02-02");        //Criando uma data a partir de uma data específica (Usar Americano)
+$agora = new DateTime();  //Criando uma nova data hora de agora
+$avulsa = new DateTime("2020-02-02"); //Criando uma data a partir de uma data específica (Usar Americano)
 $estatica = DateTime::createFromFormat('Y-m-d', "2020-02-02"); //Criando a partir de uma objeto estático a partir de um formato, sem instaciar
+$estaticaBR = DateTime::createFromFormat('d/m/Y', "2020-02-02"); //Também é possível utilizar outros formatos
 ```
 
 ### Formatando Objetos
@@ -34,9 +35,15 @@ Formata os Objetos da Classe DateTime para uma Timezone específica
 ```
 $saoPauloTimeZone = new DateTimeZone("America/Sao_Paulo"); //Timezone de São Paulo
 $apiaTimeZone = new DateTimeZone("Pacific/Apia"); //Timezone de Apia
+
 $agoraSaoPaulo = new DateTime("now", $saoPauloTimeZone); //Aplica o timezone de são paulo em agora
 $agoraApia = new DateTime("now", $apiaTimeZone);//Aplica o timezone de Apia em agora
 ```
+
+*Utilizar ```new DateTime()``` é a mesma coisa que ```new DateTime('now')```.
+
+Para definir sua TimeZone default use ```date_default_timezone_set('Asia/Dubai')```; 
+
 ## Diferença de Dadas (Classe DateInterval)
 Calcula diferença entre datas
 
@@ -46,21 +53,22 @@ Para criar um objeto de Intervalo, usa-se:
 $intervalo = new DateInterval("P5Y15DT35M");
 ```
 Onde:
- P5Y15D - Período é de 5 anos e 15 Dias
- T - informa que os comandos agora serão de tempo
- 35M - 35 Minutos
+ - P5Y15D - Período é de 5 anos e 15 Dias
+ - T - informa que os comandos agora serão de tempo
+ - 35M - 35 Minutos
 
 ### Adicionando um intervalo a um Objeto de Datetime
  
-Para realizar a adição de um intervalo, utiliza-se ```add``` (este comando já adiciona a data existente)
+Para realizar a adição de um intervalo, utiliza-se ```add```:
 ```
 $agora = new DateTime("now");
 $agora->add($intervalo);//Adiciona intervalo a data de agora
 ```
+Se imprimir ```$agora``` a operação o intervalo já estará adicionado.
 
 ### Subtrair um intervalo a um Objeto de Datetime
  
-Para realizar a adição de um intervalo, utiliza-se ```sub``` (este comando já adiciona a data existente)
+Para realizar a adição de um intervalo, utiliza-se ```sub```:
 ```
 $agora = new DateTime("now");
 $agora->sub($intervalo);//Adiciona intervalo a data de agora
@@ -95,6 +103,9 @@ object(DateInterval)[5]
   public 'have_weekday_relative' => int 0
   public 'have_special_relative' => int 0
 ```
+Pode-se destacar o ```invert```, quando é 1, a data de diff é menor(no exemplo, o nascimento), caso contrario é zero.
+
+Já o ```days``` mostra a diferença entre as datas em dias.
 
 Um exemplo do uso de ```invert``` e ```days```:
 ```
@@ -109,11 +120,11 @@ if ($diferenca->invert) {
 
 Pode-se criar um intervalo estático também:
 ```
-$agora = new DateTime("now");
-$agora->sub(DateInterval::createFromDateString("30days"))->format(DATETIME_BR);
+$agora = new DateTime("now"); //Cria uma nova DateTime
+$agora->sub(DateInterval::createFromDateString("30days"))->format(DATETIME_BR); //Remove 30 dias e passa para o formato BR
 ```
-No exemplo acima foi criado um DateTime de agora, e depois removido 30 dias de agora e aplicado o formato brasileiro
-O comando também pode ser usado para ```add```
+No exemplo acima foi criado um DateTime de agora, e depois removido 30 dias de agora e aplicado o formato brasileiro, sem a necessidade da criação de um objeto dataInterval()
+O comando também pode ser usado para ```add```.
 
 ## Período (Classe DatePeriod)
 
